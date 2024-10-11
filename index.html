@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Red Cube with Lines</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: black; /* Set background of the entire page to black */
+      color: white; /* Set text color to white for visibility */
+      font-family: Arial, sans-serif;
+    }
+    
+    #myCanvas {
+      display: block;
+    }
+
+    .content {
+      text-align: center;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="myCanvas"></canvas>
+
+  <div class="content">
+    <h1>Okay but why?</h1>
+    <p></p>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("myCanvas");
+    const ctx = canvas.getContext("2d");
+
+    // Resize the canvas to take the full screen
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight * 0.7; // Reserve space for text
+
+    // Function to draw the cube (represented as a square)
+    function drawCube() {
+      // Set background color to black
+      ctx.fillStyle = "#000";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Define the cube properties (red cube with white border)
+      let cubeSize = 400;
+      let xOffset = (canvas.width - cubeSize) / 2;
+      let yOffset = (canvas.height - cubeSize) / 2;
+
+      // Draw the cube (square)
+      ctx.fillStyle = "#FF0000"; // Red fill
+      ctx.fillRect(xOffset, yOffset, cubeSize, cubeSize);
+      ctx.strokeStyle = "#FFFFFF"; // White border
+      ctx.lineWidth = 4;
+      ctx.strokeRect(xOffset, yOffset, cubeSize, cubeSize);
+
+      // Draw geometrically spaced lines inside the cube
+      let lineCount = 10; // Number of lines
+      let spacing = cubeSize / (lineCount + 1); // Calculate equal spacing
+
+      for (let i = 1; i <= lineCount; i++) {
+        let lineX = xOffset + i * spacing;
+        let lineY = yOffset + i * spacing;
+
+        // Randomly choose a color (multicolored including fuchsia)
+        let colors = ["#FF00FF", "#00FFFF", "#FFFFFF", "#FF00FF"]; // Fuchsia, cyan, white
+        let color = colors[Math.floor(Math.random() * colors.length)];
+
+        // Draw a line from top-left to bottom-right
+        ctx.strokeStyle = color;
+        ctx.beginPath();
+        ctx.moveTo(xOffset, lineY);
+        ctx.lineTo(lineX, yOffset + cubeSize);
+        ctx.stroke();
+
+        // Draw a line from bottom-left to top-right
+        ctx.beginPath();
+        ctx.moveTo(xOffset, lineY);
+        ctx.lineTo(xOffset + cubeSize, lineY);
+        ctx.stroke();
+      }
+    }
+
+    // Continuously redraw the cube
+    function animate() {
+      drawCube();
+      requestAnimationFrame(animate);
+    }
+
+    animate(); // Start the animation
+  </script>
+</body>
+</html>
